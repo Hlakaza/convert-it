@@ -1,0 +1,88 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col col-auto mt-5" *ngIf="loading">
+      <mat-progress-spinner
+        class="example-margin"
+        color="primary"
+        mode="indeterminate"
+      >
+      </mat-progress-spinner>
+    </div>
+    <div class="col-12" *ngIf="!loading">
+        <div class="row justify-content-center mb-3">
+            <div class="col-12 col-md-4 col-lg-3">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Amount</mat-label>
+                  <input matInput placeholder="Amount" type="number" [formControl]="amountControl" />
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-4 col-lg-3">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Base Currency</mat-label>
+                  <input
+                    type="text"
+                    placeholder="Pick a currency"
+                    aria-label="Number"
+                    matInput
+                    [formControl]="baseSymbolControl"
+                    [matAutocomplete]="auto"
+                    (focusout)="confirmCurrencyExists(baseSymbolControl)"
+                  />
+                  <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option
+                      *ngFor="let option of filteredBaseSymbols | async"
+                      [value]="option?.symbol"
+                    >
+                    {{ option?.symbol }} - {{ option?.description }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-4 col-lg-3">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Conversion Currency</mat-label>
+                  <input
+                    type="text"
+                    placeholder="Pick a currency"
+                    aria-label="Number"
+                    matInput
+                    [formControl]="conversionSymbolControl"
+                    [matAutocomplete]="autoConvert"
+                    (focusout)="confirmCurrencyExists(conversionSymbolControl)"
+                  />
+                  <mat-autocomplete #autoConvert="matAutocomplete">
+                    <mat-option
+                      *ngFor="let option of filteredConversionSymbols | async"
+                      [value]="option?.symbol"
+                    >
+                      {{ option?.symbol }} - {{ option?.description }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <div class="col-auto">
+                <button mat-fab color="primary" [disabled]="!(amountControl?.valid && baseSymbolControl?.valid && conversionSymbolControl?.valid)"
+                (click)="swapConversionCurrency()">
+                  <mat-icon>shuffle</mat-icon>
+                </button>
+            </div>
+            <div class="col-auto">
+                <button mat-fab color="primary" [disabled]="!(amountControl?.valid && baseSymbolControl?.valid && conversionSymbolControl?.valid)"
+                (click)="convert()">
+                  <mat-icon>currency_exchange</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12" *ngIf="conversionResults && !loading">
+                <div class="alert alert-info" role="alert">
+                    <h2 class="alert-heading mb-1">Results:</h2>
+                    <h3 class="mb-0">{{ conversionResults?.query?.amount | currency: conversionResults?.query?.from }} = {{ conversionResults?.result | currency: conversionResults?.query?.to }}</h3>
+                    <hr>
+                    <h3 class="mb-0">{{ 1 | currency: conversionResults?.query?.from }} = {{ conversionResults?.info?.rate | currency: conversionResults?.query?.to }}</h3>
+                  </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
