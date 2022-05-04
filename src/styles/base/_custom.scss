@@ -9,6 +9,13 @@ body{
   height: 100vh;
 }
 
+.heading {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .content-box {
   padding: 50px;
   max-width: 500px;
@@ -31,4 +38,15 @@ body{
   .content-box{
     padding: 15px;
   }
+  .heading {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    text-align: center;
+    padding-top: 15px;
+    padding-bottom: 10px;
+    background-color: #673ab7;
+    margin-bottom: 0 !important;
+}
 }
