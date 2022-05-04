@@ -1,6 +1,6 @@
 {
-  "name": "convert-it",
-  "short_name": "convert-it",
+  "name": "SPG Converter",
+  "short_name": "SPGC",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
