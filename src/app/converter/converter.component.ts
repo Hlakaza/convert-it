@@ -20,6 +20,7 @@ export class ConverterComponent implements OnInit {
   filteredBaseSymbols!: Observable<any[]>;
   filteredConversionSymbols!: Observable<any[]>;
   conversionResults: any;
+  imgAvailable = [];
 
   constructor(readonly converter: ConverterService) { }
 
@@ -76,6 +77,12 @@ export class ConverterComponent implements OnInit {
       }
     }, 250);
 
+  }
+
+  getImage(currency: string): string {
+    const value = currency ? currency.toLowerCase() : '';
+    const countryCode = value.replace(value.substring(2), '');
+    return countryCode === 'hp' ? 'ph' : countryCode ;
   }
 
   private _filter(value: string, symbolType: 'base' | 'conversion'): any[] {

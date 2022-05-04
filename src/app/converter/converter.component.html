@@ -1,4 +1,4 @@
-<div class="container py-4">
+<div class="content-box">
   <div class="row justify-content-center">
     <div class="col col-auto mt-5" *ngIf="loading">
       <mat-progress-spinner
@@ -9,14 +9,15 @@
       </mat-progress-spinner>
     </div>
     <div class="col-12" *ngIf="!loading">
+      <h2 class="mb-5 text-center">Currency converter</h2>
         <div class="row justify-content-center mb-3">
-            <div class="col-12 col-md-4 col-lg-3">
+            <div class="col-12 mb-4">
                 <mat-form-field appearance="outline" class="w-100">
                   <mat-label>Amount</mat-label>
                   <input matInput placeholder="Amount" type="number" [formControl]="amountControl" />
                 </mat-form-field>
             </div>
-            <div class="col-12 col-md-4 col-lg-3">
+            <div class="col-5">
                 <mat-form-field class="w-100" appearance="outline">
                   <mat-label>Base Currency</mat-label>
                   <input
@@ -30,15 +31,22 @@
                   />
                   <mat-autocomplete #auto="matAutocomplete">
                     <mat-option
-                      *ngFor="let option of filteredBaseSymbols | async"
-                      [value]="option?.symbol"
+                    *ngFor="let option of filteredBaseSymbols | async"
+                    [value]="option?.symbol"
                     >
-                    {{ option?.symbol }} - {{ option?.description }}
+                    <img class="option-img" aria-hidden [src]="'assets/countries/svg/'+getImage(option.symbol)+'.svg'" height="25">
+                    {{ option?.symbol }}
                     </mat-option>
                   </mat-autocomplete>
                 </mat-form-field>
             </div>
-            <div class="col-12 col-md-4 col-lg-3">
+            <div class="col-2 text-center p-0">
+              <button mat-fab color="primary" [disabled]="!(amountControl?.valid && baseSymbolControl?.valid && conversionSymbolControl?.valid)"
+              (click)="swapConversionCurrency()">
+                <mat-icon>swap_horiz</mat-icon>
+              </button>
+          </div>
+            <div class="col-5">
                 <mat-form-field class="w-100" appearance="outline">
                   <mat-label>Conversion Currency</mat-label>
                   <input
@@ -55,21 +63,17 @@
                       *ngFor="let option of filteredConversionSymbols | async"
                       [value]="option?.symbol"
                     >
-                      {{ option?.symbol }} - {{ option?.description }}
+                    <img class="option-img" aria-hidden [src]="'assets/countries/svg/'+getImage(option.symbol)+'.svg'" height="25">
+                      {{ option?.symbol }}
                     </mat-option>
                   </mat-autocomplete>
                 </mat-form-field>
             </div>
-            <div class="col-auto">
-                <button mat-fab color="primary" [disabled]="!(amountControl?.valid && baseSymbolControl?.valid && conversionSymbolControl?.valid)"
-                (click)="swapConversionCurrency()">
-                  <mat-icon>shuffle</mat-icon>
-                </button>
-            </div>
-            <div class="col-auto">
-                <button mat-fab color="primary" [disabled]="!(amountControl?.valid && baseSymbolControl?.valid && conversionSymbolControl?.valid)"
+           
+            <div class="col-auto mt-4">
+                <button mat-raised-button color="primary" [disabled]="!(amountControl?.valid && baseSymbolControl?.valid && conversionSymbolControl?.valid)"
                 (click)="convert()">
-                  <mat-icon>currency_exchange</mat-icon>
+                  <mat-icon>currency_exchange</mat-icon> CONVERT
                 </button>
             </div>
         </div>
